@@ -17,7 +17,8 @@ addpath ../common/minFunc_2012/minFunc/compiled
 data = load('housing.data');
 data=data'; % put examples in columns
 
-% Include a row of 1s as an additional intercept feature.
+% Include a row of 0s as an additional intercept feature.
+%size(data,2) is the column number of data, which is also the sample number.
 data = [ ones(1,size(data,2)); data ];
 
 % Shuffle examples.

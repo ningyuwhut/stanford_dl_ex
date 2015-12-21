@@ -6,9 +6,10 @@ function [f,g] = linear_regression(theta, X,y)
   %       X(i,j) is the i'th coordinate of the j'th example.
   %   y - The target value for each example.  y(j) is the target for example j.
   %
+  %x中样本按列存放
   
-  m=size(X,2);
-  n=size(X,1);
+  m=size(X,2); %列,样本数
+  n=size(X,1); %行,特征数 
 
   f=0;
   g=zeros(size(theta));
@@ -22,3 +23,18 @@ function [f,g] = linear_regression(theta, X,y)
   %        computed gradient in 'g'.
   
 %%% YOUR CODE HERE %%%
+
+ for i = 1:m %样本
+	hi=0
+	for j=1:n %特征
+		hi+=theta(j)*X(j,i)
+	f+=(hi-y(i))**2
+ f=f/2
+
+ for i = 1:m %样本
+	hi=0
+	for j=1:n %特征
+		hi+=theta(j)*X(j,i)
+		
+	for j=1:n
+		g(j)+=(hi-y(i))*X(j,i)
