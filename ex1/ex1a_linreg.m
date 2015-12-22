@@ -22,6 +22,7 @@ data=data'; % put examples in columns
 data = [ ones(1,size(data,2)); data ];
 
 % Shuffle examples.
+%randperm返回一个行向量，向量中的元素是对1:size(data,2)中的元素的随机排列
 data = data(:, randperm(size(data,2)));
 
 % Split into train and test sets
@@ -32,8 +33,8 @@ train.y = data(end,1:400);
 test.X = data(1:end-1,401:end);
 test.y = data(end,401:end);
 
-m=size(train.X,2);
-n=size(train.X,1);
+m=size(train.X,2); %样本数
+n=size(train.X,1); %特征数
 
 % Initialize the coefficient vector theta to random values.
 theta = rand(n,1);
@@ -43,8 +44,10 @@ theta = rand(n,1);
 % TODO:  Implement the linear regression objective and gradient computations
 % in linear_regression.m
 %
+
+%@linear_regression是一个函数
 tic;
-options = struct('MaxIter', 200);
+options = struct('MaxIter', 200,'useMex',0 ); %一个标量结构体，成员MaxIter的值为200
 theta = minFunc(@linear_regression, theta, options, train.X, train.y);
 fprintf('Optimization took %f seconds.\n', toc);
 
@@ -67,6 +70,7 @@ actual_prices = train.y;
 predicted_prices = theta'*train.X;
 
 % Print out root-mean-squared (RMS) training error.
+%x .^ y表示元素乘方，这里表示平方
 train_rms=sqrt(mean((predicted_prices - actual_prices).^2));
 fprintf('RMS training error: %f\n', train_rms);
 
@@ -80,10 +84,10 @@ fprintf('RMS testing error: %f\n', test_rms);
 % Plot predictions on test data.
 plot_prices=true;
 if (plot_prices)
-  [actual_prices,I] = sort(actual_prices);
-  predicted_prices=predicted_prices(I);
-  plot(actual_prices, 'rx');
-  hold on;
+  [actual_prices,I] = sort(actual_prices); %sort函数对参数进行升序排列,返回的I表示排序后的元素在原数组上的下标
+  predicted_prices=predicted_prices(I); %返回对应的预测价格
+  plot(actual_prices, 'rx'); 
+  hold on; %hold on表示后面的图也显示在这个plot上
   plot(predicted_prices,'bx');
   legend('Actual Price', 'Predicted Price');
   xlabel('House #');

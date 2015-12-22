@@ -24,17 +24,23 @@ function [f,g] = linear_regression(theta, X,y)
   
 %%% YOUR CODE HERE %%%
 
- for i = 1:m %样本
-	hi=0
+  for i = 1:m %样本
+	hi=0;
 	for j=1:n %特征
-		hi+=theta(j)*X(j,i)
-	f+=(hi-y(i))**2
- f=f/2
+		hi+=theta(j)*X(j,i);
+	endfor
+	f+=(hi-y(i))**2;
+  endfor
+  f=f/2;
 
- for i = 1:m %样本
-	hi=0
+  for i = 1:m %样本
+	hi=0;
 	for j=1:n %特征
-		hi+=theta(j)*X(j,i)
+		hi+=theta(j)*X(j,i);
+	endfor
 		
 	for j=1:n
-		g(j)+=(hi-y(i))*X(j,i)
+		g(j)+=(hi-y(i))*X(j,i);
+	endfor
+  endfor
+endfunction
