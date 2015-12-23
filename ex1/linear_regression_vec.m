@@ -18,3 +18,8 @@ function [f,g] = linear_regression_vec(theta, X,y)
   %        Store the objective function value in 'f', and the gradient in 'g'.
   %
 %%% YOUR CODE HERE %%%
+  theta'*X; %表示每个样本的拟合值,是一个行向量
+  y_diff=theta'*X-y;
+  f=sum(y_diff.^2)/2;
+  g=X*y_diff';
+endfunction

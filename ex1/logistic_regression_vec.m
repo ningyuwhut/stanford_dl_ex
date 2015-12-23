@@ -19,3 +19,6 @@ function [f,g] = logistic_regression_vec(theta, X,y)
   %        Store the objective function value in 'f', and the gradient in 'g'.
   %
 %%% YOUR CODE HERE %%%
+    sigmoid=1./(1+exp(-theta'*X)); %一个行向量,每个样本的sigmoid值
+    f=-log(sigmoid)*y'+log(1-sigmoid)*(1-y)';
+    g=X*(sigmoid-y)'; %列向量

@@ -28,7 +28,7 @@ data = data(:, randperm(size(data,2)));
 % Split into train and test sets
 % The last row of 'data' is the median home price.
 train.X = data(1:end-1,1:400);
-train.y = data(end,1:400);
+train.y = data(end,1:400); %行向量
 
 test.X = data(1:end-1,401:end);
 test.y = data(end,401:end);
@@ -60,10 +60,10 @@ fprintf('Optimization took %f seconds.\n', toc);
 %
 % Uncomment the lines below to run your vectorized code.
 %Re-initialize parameters
-%theta = rand(n,1);
-%tic;
-%theta = minFunc(@linear_regression_vec, theta, options, train.X, train.y);
-%fprintf('Optimization took %f seconds.\n', toc);
+theta = rand(n,1);
+tic;
+theta = minFunc(@linear_regression_vec, theta, options, train.X, train.y);
+fprintf('Optimization took %f seconds.\n', toc);
 
 % Plot predicted prices and actual prices from training set.
 actual_prices = train.y;
@@ -71,6 +71,8 @@ predicted_prices = theta'*train.X;
 
 % Print out root-mean-squared (RMS) training error.
 %x .^ y表示元素乘方，这里表示平方
+%用RMS评价回归的效果
+%mean是求向量的均值
 train_rms=sqrt(mean((predicted_prices - actual_prices).^2));
 fprintf('RMS training error: %f\n', train_rms);
 
