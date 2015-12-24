@@ -20,10 +20,10 @@ test.y = test.y+1; % make labels 1-based.
 
 % Training set info
 m=size(train.X,2);
-n=size(train.X,1);
+n=size(train.X,1); %特征数
 
 % Train softmax classifier using minFunc
-options = struct('MaxIter', 200);
+options = struct('MaxIter', 200 ,'useMex',0 );
 
 % Initialize theta.  We use a matrix where each column corresponds to a class,
 % and each row is a classifier coefficient for that class.

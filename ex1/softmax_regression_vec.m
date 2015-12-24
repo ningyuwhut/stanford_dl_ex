@@ -14,7 +14,8 @@ function [f,g] = softmax_regression(theta, X,y)
   n=size(X,1);
 
   % theta is a vector;  need to reshape to n x num_classes.
-  theta=reshape(theta, n, []);
+  % Specify [] for the second dimension size to let reshape automatically calculate the appropriat    e number of columns.
+  theta=reshape(theta, n, []); %一行一个特征，一列是一个类
   num_classes=size(theta,2)+1;
   
   % initialize objective value and gradient.
@@ -27,6 +28,26 @@ function [f,g] = softmax_regression(theta, X,y)
   %        Before returning g, make sure you form it back into a vector with g=g(:);
   %
 %%% YOUR CODE HERE %%%
-  
+  %y是一个行向量
+    disp("size of y"), disp(size(y));
+    disp("size of x"), disp(size(X));
+    disp("size of theta"), disp(size(theta));
+    disp("size of p"), disp(size(sum(exp(theta'*X),1)));
+    disp("size of theta_x"), disp(size(exp(theta'*X)));
+
+    y_hat=[exp(theta'*X);ones(1,size(theta'*X,2))]; %最后一行加上最后一个类的概率的分子，即1
+    p=y_hat ./sum(y_hat,1); %按列求和,每列表示一个样本属于每个类的概率,结果为分子的每一列除以分母的对应的列,得到每个样本属于每个类的概率，每一列表示一个一个样本
+    disp("size of p"), disp(size(p));
+    disp(size(p'));
+    disp(size(p',1));
+    disp(size(y));
+    I=sub2ind(size(p'),1:size(p',1),y); %I表示
+    value=p'(I);
+    f=-sum(value);
+    indicator=zeros(size(p'));
+    indicator(I)=1; %一行表示一个样本
+    g=-X*(indicator-p');
+    g=g(:,1:end-1); %去掉最后一个类的值，因为最后一个类的值都为0
+  %运行大约一分钟
   g=g(:); % make gradient a vector for minFunc
 
