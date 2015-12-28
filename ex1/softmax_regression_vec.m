@@ -29,19 +29,14 @@ function [f,g] = softmax_regression(theta, X,y)
   %
 %%% YOUR CODE HERE %%%
   %y是一个行向量
-    disp("size of y"), disp(size(y));
-    disp("size of x"), disp(size(X));
-    disp("size of theta"), disp(size(theta));
-    disp("size of p"), disp(size(sum(exp(theta'*X),1)));
-    disp("size of theta_x"), disp(size(exp(theta'*X)));
 
     y_hat=[exp(theta'*X);ones(1,size(theta'*X,2))]; %最后一行加上最后一个类的概率的分子，即1
     p=y_hat ./sum(y_hat,1); %按列求和,每列表示一个样本属于每个类的概率,结果为分子的每一列除以分母的对应的列,得到每个样本属于每个类的概率，每一列表示一个一个样本
-    disp("size of p"), disp(size(p));
-    disp(size(p'));
-    disp(size(p',1));
-    disp(size(y));
+    size(p')
+    size(p',1)
+    size(y)
     I=sub2ind(size(p'),1:size(p',1),y); %I表示
+    exit
     value=p'(I);
     f=-sum(value);
     indicator=zeros(size(p'));

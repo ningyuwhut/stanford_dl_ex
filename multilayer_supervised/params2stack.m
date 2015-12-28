@@ -11,10 +11,9 @@ function stack = params2stack(params, ei)
 %             the configuration of the network
 %
 
-
 % Map the params (a vector into a stack of weights)
 depth = numel(ei.layer_sizes);
-stack = cell(depth,1);
+stack = cell(depth,1);%depth*1的cell矩阵
 % the size of the previous layer
 prev_size = ei.input_dim; 
 % mark current position in parameter vector
@@ -24,20 +23,18 @@ for d = 1:depth
     % Create layer d
     stack{d} = struct;
 
-    hidden = ei.layer_sizes(d);
+    hidden = ei.layer_sizes(d); %隐藏层d节点单元个数
     % Extract weights
-    wlen = double(hidden * prev_size);
+    wlen = double(hidden * prev_size);%隐藏层d的权重参数个数
     stack{d}.W = reshape(params(cur_pos:cur_pos+wlen-1), hidden, prev_size);
     cur_pos = cur_pos+wlen;
 
     % Extract bias
-    blen = hidden;
+    blen = hidden;%隐藏层中的每个输出单元都有一个偏置项
     stack{d}.b = reshape(params(cur_pos:cur_pos+blen-1), hidden, 1);
     cur_pos = cur_pos+blen;
     
     % Set previous layer size
     prev_size = hidden;
-    
 end
-
 end

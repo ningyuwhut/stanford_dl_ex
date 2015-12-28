@@ -27,12 +27,13 @@ ei.output_dim = 10;
 % sizes of all hidden layers and the output layer
 ei.layer_sizes = [256, ei.output_dim];
 % scaling parameter for l2 weight regularization penalty
-ei.lambda = 0;
+ei.lambda = 0.00001;
 % which type of activation function to use in hidden layers
 % feel free to implement support for only the logistic sigmoid function
 ei.activation_fun = 'logistic';
 
 %% setup random initial weights
+%每一层的参数都随机初始化一遍
 stack = initialize_weights(ei);
 params = stack2params(stack);
 
@@ -41,18 +42,19 @@ options = [];
 options.display = 'iter';
 options.maxFunEvals = 1e6;
 options.Method = 'lbfgs';
+options.useMex=0
 
 %% run training
-[opt_params,opt_value,exitflag,output] = minFunc(@supervised_dnn_cost,...
+tic;
+[opt_params,opt_value,exitflag,output] = minFunc(@my_supervised_dnn_cost,...
     params,options,ei, data_train, labels_train);
-
-%% compute accuracy on the test and train set
-[~, ~, pred] = supervised_dnn_cost( opt_params, ei, data_test, [], true);
+fprintf('Optimization took %f seconds.\n', toc);
+[~, ~, pred] = my_supervised_dnn_cost( opt_params, ei, data_test, [], true);
 [~,pred] = max(pred);
 acc_test = mean(pred'==labels_test);
 fprintf('test accuracy: %f\n', acc_test);
 
-[~, ~, pred] = supervised_dnn_cost( opt_params, ei, data_train, [], true);
+[~, ~, pred] = my_supervised_dnn_cost( opt_params, ei, data_train, [], true);
 [~,pred] = max(pred);
 acc_train = mean(pred'==labels_train);
 fprintf('train accuracy: %f\n', acc_train);

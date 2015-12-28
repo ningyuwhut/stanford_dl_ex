@@ -22,17 +22,20 @@ for d = 1:numel(stack)
     % This can be optimized. But since our stacks are relatively short, it
     % is okay
     params = [params ; stack{d}.W(:) ; stack{d}.b(:) ];
-    
+    %w为一行，b为一行
+    %这是先把矩阵给摊平
+%    display d
     % Check that stack is of the correct form
-    assert(size(stack{d}.W, 1) == size(stack{d}.b, 1), ...
+    assert(size(stack{d}.W, 1) == size(stack{d}.b, 1), ...  %三个点表示换行
         ['The bias should be a *column* vector of ' ...
          int2str(size(stack{d}.W, 1)) 'x1']);
+    %每个输出单元都有一个偏置项
      % no layer size constrain with conv nets
      if d < numel(stack)
         assert(mod(size(stack{d+1}.W, 2), size(stack{d}.W, 1)) == 0, ...
             ['The adjacent layers L' int2str(d) ' and L' int2str(d+1) ...
              ' should have matching sizes.']);
+	%当前层的输出单元个数是下一层的输入单元个数
      end
 end
-
 end
