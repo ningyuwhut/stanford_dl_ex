@@ -1,10 +1,10 @@
 function convolvedFeatures = cnnConvolve(filterDim, numFilters, images, W, b)
 %cnnConvolve Returns the convolution of the features given by W and b with
 %the given images
-%
+%filter应该可以理解成卷积单元
 % Parameters:
-%  filterDim - filter (feature) dimension
-%  numFilters - number of feature maps
+%  filterDim - filter (feature) dimension %这个是表示卷积单元的大小？比如在8*8的patch上进行卷积
+%  numFilters - number of feature maps %难道是每个patch上需要学习的特征个数?
 %  images - large images to convolve with, matrix in the form
 %           images(r, c, image number)
 %  W, b - W, b for features from the sparse autoencoder
@@ -16,11 +16,14 @@ function convolvedFeatures = cnnConvolve(filterDim, numFilters, images, W, b)
 %                      convolvedFeatures(imageRow, imageCol, featureNum, imageNum)
 
 numImages = size(images, 3);
-imageDim = size(images, 1);
+imageDim = size(images, 1); %images的行具有多少像素？
 convDim = imageDim - filterDim + 1;
 
 convolvedFeatures = zeros(convDim, convDim, numFilters, numImages);
+%四维矩阵
 
+%(imageDim - filterDim + 1) x (imageDim - filterDim + 1)是每个图片上的卷积单元个数
+%numFeatures是每个卷积单元上的特征数
 % Instructions:
 %   Convolve every filter with every image here to produce the 
 %   (imageDim - filterDim + 1) x (imageDim - filterDim + 1) x numFeatures x numImages
@@ -28,6 +31,7 @@ convolvedFeatures = zeros(convDim, convDim, numFilters, numImages);
 %   convolvedFeatures(imageRow, imageCol, featureNum, imageNum) is the
 %   value of the convolved featureNum feature for the imageNum image over
 %   the region (imageRow, imageCol) to (imageRow + filterDim - 1, imageCol + filterDim - 1)
+%在区域(imageRow, imageCol) to (imageRow + filterDim - 1, imageCol + filterDim - 1)上计算卷积特征，特征个数为featreuNum，也等于numFilters
 %
 % Expected running times: 
 %   Convolving with 100 images should take less than 30 seconds 
