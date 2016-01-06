@@ -36,7 +36,6 @@ function [f,g] = softmax_regression(theta, X,y)
     size(p',1)
     size(y)
     I=sub2ind(size(p'),1:size(p',1),y); %I表示
-    exit
     value=p'(I);
     f=-sum(value);
     indicator=zeros(size(p'));

@@ -9,7 +9,6 @@ function pooledFeatures = cnnPool(poolDim, convolvedFeatures)
 % Returns:
 %  pooledFeatures - matrix of pooled features in the form
 %                   pooledFeatures(poolRow, poolCol, featureNum, imageNum)
-%     
 
 numImages = size(convolvedFeatures, 4);
 numFilters = size(convolvedFeatures, 3);
@@ -28,8 +27,24 @@ pooledFeatures = zeros(convolvedDim / poolDim, ...
 %   corresponding (poolRow, poolCol) pooling region. 
 %   
 %   Use mean pooling here.
-
+convolvedDim
+poolDim
+poolLen=floor(convolvedDim/poolDim)
 %%% YOUR CODE HERE %%%
+ for imageNum = 1:numImages
+  for filterNum = 1:numFilters
+    for poolRow = 1:poolLen
+     RowIndexBegin=1+(poolRow-1)*poolDim;
+     RowIndexEnd=RowIndexBegin+poolDim-1;
+     for poolCol = 1:poolLen
+	ColIndexBegin=1+(poolCol-1)*poolDim;
+	ColIndexEnd=ColIndexBegin+poolDim-1;
+	pooledFeatures(poolRow, poolCol, filterNum, imageNum)=mean( mean(convolvedFeatures(RowIndexBegin:RowIndexEnd, ColIndexBegin:ColIndexEnd, filterNum, imageNum) ) );
 
+     endfor
+    endfor
+  endfor
+ endfor
+ display("im")
+ size(pooledFeatures)
 end
-

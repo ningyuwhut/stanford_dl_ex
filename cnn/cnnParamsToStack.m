@@ -21,19 +21,20 @@ function [Wc, Wd, bc, bd] = cnnParamsToStack(theta,imageDim,filterDim,...
 %  bd      -  bias for dense layer of size hiddenSize x 1
 
 outDim = (imageDim - filterDim + 1)/poolDim;
-hiddenSize = outDim^2*numFilters;
+hiddenSize = outDim^2*numFilters;%隐层的大小
 
+%Wc的长度是filterDim*filterDim*numFilters
 %% Reshape theta
 indS = 1;
 indE = filterDim^2*numFilters;
 Wc = reshape(theta(indS:indE),filterDim,filterDim,numFilters);
 indS = indE+1;
-indE = indE+hiddenSize*numClasses;
+indE = indE+hiddenSize*numClasses; %隐层到输出层的参数个数
 Wd = reshape(theta(indS:indE),numClasses,hiddenSize);
 indS = indE+1;
-indE = indE+numFilters;
-bc = theta(indS:indE);
-bd = theta(indE+1:end);
+indE = indE+numFilters; 
+bc = theta(indS:indE); %卷积层的偏置，长度为numFilters
+bd = theta(indE+1:end); %输出层的偏置，长度为类的数目
 
 
 end

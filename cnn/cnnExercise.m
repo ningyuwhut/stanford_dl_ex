@@ -26,7 +26,7 @@ addpath ../common/;
 images = loadMNISTImages('../common/train-images-idx3-ubyte');
 images = reshape(images,imageDim,imageDim,numImages);
 
-W = randn(filterDim,filterDim,numFilters);
+W = randn(filterDim,filterDim,numFilters); %初始化参数
 b = rand(numFilters);
 
 %%======================================================================
@@ -51,10 +51,10 @@ convolvedFeatures = cnnConvolve(filterDim, numFilters, convImages, W, b);
 
 % For 1000 random points
 for i = 1:1000   
-    filterNum = randi([1, numFilters]);
-    imageNum = randi([1, 8]);
-    imageRow = randi([1, imageDim - filterDim + 1]);
-    imageCol = randi([1, imageDim - filterDim + 1]);    
+    filterNum = randi([1, numFilters]); %随机一个filter
+    imageNum = randi([1, 8]); %随机一个图像
+    imageRow = randi([1, imageDim - filterDim + 1]); %随机一个行
+    imageCol = randi([1, imageDim - filterDim + 1]);    %随机一个列
    
     patch = convImages(imageRow:imageRow + filterDim - 1, imageCol:imageCol + filterDim - 1, imageNum);
 
@@ -74,7 +74,6 @@ for i = 1:1000
 end
 
 disp('Congratulations! Your convolution code passed the test.');
-
 %%======================================================================
 %% STEP 2: Implement and test pooling
 %  Implement pooling in the function cnnPool in cnnPool.m
@@ -82,11 +81,10 @@ disp('Congratulations! Your convolution code passed the test.');
 %% STEP 2a: Implement pooling
 % NOTE: Implement cnnPool in cnnPool.m first!
 pooledFeatures = cnnPool(poolDim, convolvedFeatures);
-
+display("here")
 %% STEP 2b: Checking your pooling
 %  To ensure that you have implemented pooling, we will use your pooling
 %  function to pool over a test matrix and check the results.
-
 testMatrix = reshape(1:64, 8, 8);
 expectedMatrix = [mean(mean(testMatrix(1:4, 1:4))) mean(mean(testMatrix(1:4, 5:8))); ...
                   mean(mean(testMatrix(5:8, 1:4))) mean(mean(testMatrix(5:8, 5:8))); ];

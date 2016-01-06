@@ -53,7 +53,7 @@ trans_output=output';
 ceCost=-sum(log(trans_output(I)));
 ceCost;
 
-wCost=0;
+wCost=0; %正则项
 
 for d = 1:numel(stack)
     w=stack{d}.W;
@@ -72,11 +72,12 @@ for d = numel(stack)+1:-1:1
     if d == numel(stack)+1 %输出层
 	y=full(sparse(1:length(trans_labels), trans_labels, 1)); %把y扩展,一行一个样本
 	delta=hAct{d-1}-y';
+%delta是一个矩阵，每个样本关于每个类都有一个误差
 %	delta=sum(hAct{d}-y',2) %按样本即按行求所有样本的残差和,得到一个列向量
     elseif d== 1
 	gradStack{d}.W=delta*(data)'; %+ei.lambda*stack{d}.W;%delta的每一行对应一个输出单元，每列对应一个样本，hAct的每一列对应一个样本，每行对应一个输出单元
 	gradStack{d}.b=sum(delta,2); %按样本求和
-    else %if d ~= numel(stack)
+    else
 	gradStack{d}.W=delta*(hAct{d-1})';%delta的每一行对应一个输出单元，每列对应一个样本，hAct的每一列对应一个样本，每行对应一个输出单元
 	gradStack{d}.b=sum(delta,2); %按样本求和
 	delta=(stack{d}.W)' * delta .* hAct{d-1}.*(1-hAct{d-1});

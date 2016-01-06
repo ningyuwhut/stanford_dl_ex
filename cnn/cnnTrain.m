@@ -13,7 +13,7 @@
 %  Here we initialize some parameters used for the exercise.
 
 % Configuration
-imageDim = 28;
+imageDim = 28; %图像的高和宽,28*28
 numClasses = 10;  % Number of classes (MNIST images fall into 10 classes)
 filterDim = 9;    % Filter size for conv layer
 numFilters = 20;   % Number of filters for conv layer
@@ -22,7 +22,7 @@ poolDim = 2;      % Pooling dimension, (should divide imageDim-filterDim+1)
 % Load MNIST Train
 addpath ../common/;
 images = loadMNISTImages('../common/train-images-idx3-ubyte');
-images = reshape(images,imageDim,imageDim,[]);
+images = reshape(images,imageDim,imageDim,[]); %[]表示第三维会自动计算出来
 labels = loadMNISTLabels('../common/train-labels-idx1-ubyte');
 labels(labels==0) = 10; % Remap 0 to 10
 
@@ -39,7 +39,7 @@ theta = cnnInitParams(imageDim,filterDim,numFilters,poolDim,numClasses);
 %  calculation for your cnnCost.m function.  You may need to add the
 %  appropriate path or copy the file to this directory.
 
-DEBUG=false;  % set this to true to check gradient
+DEBUG=true;  % set this to true to check gradient
 if DEBUG
     % To speed up gradient checking, we will use a reduced network and
     % a debugging data set
