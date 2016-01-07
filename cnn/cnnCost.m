@@ -100,9 +100,9 @@ probs = zeros(numClasses,numImages);
 size(Wd)
 size(activationsPooled)
 z=Wd*activationsPooled+repmat(bd,1,numImages);
-z= bsxfun(@minus, z, max(z)); %这个操作是为什么
+%z= bsxfun(@minus, z, max(z)); %这个操作是为什么
 y_hat=exp(z); %Wd:numClasses*hiddenSize, activationsPooled:hiddenSize*numImages
-probs=exp(y_hat)./sum(y_hat,1); %一列表示一个样本属于每个类的概率
+probs=y_hat./sum(y_hat,1); %一列表示一个样本属于每个类的概率
 
 %%======================================================================
 %% STEP 1b: Calculate Cost
@@ -114,11 +114,15 @@ cost = 0; % save objective into cost
 
 %%% YOUR CODE HERE %%%
 
+lambda=0.00001;
 size(probs)
 labels
-I=sub2ind(size(probs), 1:size(probs,1),labels'); %后面两个参数维度必须相同，这里都是行向量
-value=probs(I);
-cost=-sum(value);
+size(labels)
+I=sub2ind(size(probs), labels', 1:size(probs,2)); %后面两个参数维度必须相同，这里都是行向量
+%注意sub2ind的后两个参数
+value=log(probs(I));
+wCost=lambda/2*(sum(Wd(:).^2)+sum(Wc(:).^2)); %weight_decay
+cost=-sum(value)+wCost;
 % Makes predictions given probs and returns without backproagating errors.
 if pred
     [~,preds] = max(probs,[],1);
@@ -165,8 +169,9 @@ endfor
 %  for that filter with each image and aggregate over images.
 
 %%% YOUR CODE HERE %%%
-Wd_grad= activationsPooled*delta_d'; %hiddenSize*numImages * (classes*numImages)^T
-bd_grad= sum(delta_d,1);
+Wd_grad= delta_d*activationsPooled'+lambda*Wd; %* (classes*numImages) *(hiddenSize*numImages)^T
+%先不加正则项
+bd_grad= sum(delta_d,2); %delta_d的维度是numClasses*numImages,按行求和
 
 %convolved_error=zeros(filterDim, filterDim, numFilters, numImages);
 for i=1:numImages
@@ -185,6 +190,7 @@ for i=1:numImages
     Wc_grad(:,:,j)+=convolved_filter_error; %把每个图像这个filter上误差的卷积都加起来
  endfor
 endfor
+Wc_grad+=lambda*Wc;
 %cost在计算的时候没有除以图像数目，所以这里在求偏导时也不用除以图像数目
 
 %% Unroll gradient into grad vector for minFunc
