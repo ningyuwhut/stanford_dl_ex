@@ -87,6 +87,7 @@ opttheta = randTheta;
 %  then call minFunc with the softICACost function as seen in the RICA exercise.
 %%% YOUR CODE HERE %%%
 
+[opttheta, cost, exitflag] = minFunc( @(theta) softICACost(theta, x, params), randTheta, options); % Use x or xw
 % reshape visualize weights
 W = reshape(opttheta, params.numFeatures, params.n);
 display_network(W');

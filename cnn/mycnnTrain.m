@@ -39,7 +39,7 @@ theta = cnnInitParams(imageDim,filterDim,numFilters,poolDim,numClasses);
 %  calculation for your cnnCost.m function.  You may need to add the
 %  appropriate path or copy the file to this directory.
 
-DEBUG=false;  % set this to true to check gradient
+DEBUG=true;  % set this to true to check gradient
 
 if DEBUG
     % To speed up gradient checking, we will use a reduced network and
@@ -52,12 +52,12 @@ if DEBUG
     db_theta = cnnInitParams(imageDim,db_filterDim,db_numFilters,...
                 db_poolDim,numClasses);
     
-    [cost grad] = cnnCostOnline(db_theta,db_images,db_labels,numClasses,...
+    [cost grad] = cnnCost(db_theta,db_images,db_labels,numClasses,...
                                 db_filterDim,db_numFilters,db_poolDim);
     
 
     % Check gradients
-    numGrad = computeNumericalGradient( @(x) cnnCostOnline(x,db_images,...
+    numGrad = computeNumericalGradient( @(x) cnnCost(x,db_images,...
                                 db_labels,numClasses,db_filterDim,...
                                 db_numFilters,db_poolDim), db_theta);
  
@@ -82,7 +82,7 @@ options.minibatch = 256;
 options.alpha = 1e-1;
 options.momentum = .95;
 
-opttheta = minFuncSGD(@(x,y,z) cnnCostOnline(x,y,z,numClasses,filterDim,...
+opttheta = minFuncSGD(@(x,y,z) cnnCost(x,y,z,numClasses,filterDim,...
                       numFilters,poolDim),theta,images,labels,options);
 
 %%======================================================================
@@ -95,7 +95,7 @@ testImages = reshape(testImages,imageDim,imageDim,[]);
 testLabels = loadMNISTLabels('../common/t10k-labels-idx1-ubyte');
 testLabels(testLabels==0) = 10; % Remap 0 to 10
 
-[~,cost,preds]=cnnCostOnline(opttheta,testImages,testLabels,numClasses,...
+[~,cost,preds]=cnnCost(opttheta,testImages,testLabels,numClasses,...
                 filterDim,numFilters,poolDim,true);
 
 acc = sum(preds==testLabels)/length(preds);

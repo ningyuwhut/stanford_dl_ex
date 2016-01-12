@@ -55,6 +55,7 @@ for imageNum = 1:numImages
     % Convolve "filter" with "im" to find "resp"
     % be sure to do a 'valid' convolution
     %%% YOUR CODE HERE %%%
+
     % Then, apply square-square-root pooling on "resp" to get the hidden
     % activation "act"
     act = zeros(convDim / poolDim, convDim / poolDim); % You should replace this

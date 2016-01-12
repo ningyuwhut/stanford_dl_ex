@@ -36,6 +36,7 @@ options.MaxFunEvals = Inf;
 options.MaxIter = 500;
 %options.display = 'off';
 options.outputFcn = @showBases;
+options.useMex=0;
 
 % initialize with random weights
 randTheta = randn(params.numFeatures,params.n)*0.01; % 1/sqrt(params.n);
@@ -43,6 +44,7 @@ randTheta = randTheta ./ repmat(sqrt(sum(randTheta.^2,2)), 1, size(randTheta,2))
 randTheta = randTheta(:);
 
 % optimize
+%[opttheta, cost, exitflag] = minFunc( @(theta) softICACostOnline(theta, x, params), randTheta, options); % Use x or xw
 [opttheta, cost, exitflag] = minFunc( @(theta) softICACost(theta, x, params), randTheta, options); % Use x or xw
 
 % display result
